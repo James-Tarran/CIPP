@@ -42,6 +42,11 @@ const Page = () => {
       value: [{ id: "ForwardingType", value: "Internal" }],
       type: "column",
     },
+    {
+      filterName: "Both (External & Internal)",
+      value: [{ id: "ForwardingType", value: "Both" }],
+      type: "column",
+    },
   ];
 
   const pageActions = [

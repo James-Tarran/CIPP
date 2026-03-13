@@ -1375,25 +1375,7 @@
         "creatable": false,
         "required": false,
         "name": "standards.AppManagementPolicy.passwordCredentialsCustomPasswordAddition",
-        "label": "Custom Password Addition",
-        "options": [
-          {
-            "label": "Enabled",
-            "value": "enabled"
-          },
-          {
-            "label": "Disabled",
-            "value": "disabled"
-          }
-        ]
-      },
-      {
-        "type": "autoComplete",
-        "multiple": false,
-        "creatable": false,
-        "required": false,
-        "name": "standards.AppManagementPolicy.keyCredentialsSymmetricKeyAddition",
-        "label": "Symmetric Key Addition",
+        "label": "Custom Password",
         "options": [
           {
             "label": "Enabled",

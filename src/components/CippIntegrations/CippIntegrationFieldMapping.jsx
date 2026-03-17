@@ -8,15 +8,16 @@ import {
   Button,
   Alert,
 } from "@mui/material";
-import CippFormSection from "/src/components/CippFormPages/CippFormSection";
+import CippFormSection from "../CippFormPages/CippFormSection";
 import { useForm } from "react-hook-form";
-import { ApiGetCall } from "/src/api/ApiCall";
+import { ApiGetCall, ApiPostCall } from "../../api/ApiCall";
 import { useRouter } from "next/router";
-import extensions from "/src/data/Extensions.json";
+import extensions from "../../data/Extensions.json";
 import React, { useEffect, useState } from "react";
-import CippFormComponent from "/src/components/CippComponents/CippFormComponent";
-import { Sync } from "@mui/icons-material";
+import CippFormComponent from "../CippComponents/CippFormComponent";
+import { Sync, Add } from "@mui/icons-material";
 import { Stack, Grid } from "@mui/system";
+import { CippApiResults } from "../CippComponents/CippApiResults";
 
 const CippIntegrationFieldMapping = () => {
   const router = useRouter();
@@ -35,6 +36,17 @@ const CippIntegrationFieldMapping = () => {
 
   const extension = extensions.find((extension) => extension.id === router.query.id);
   const [missingMappings, setMissingMappings] = useState([]);
+
+  const createCATypePostCall = ApiPostCall({
+    relatedQueryKeys: [`IntegrationFieldMapping-${router.query.id}`],
+  });
+
+  const handleCreateCAType = () => {
+    createCATypePostCall.mutate({
+      url: `/api/ExecExtensionMapping?CreateCAType=${router.query.id}`,
+      data: {},
+    });
+  };
 
   useEffect(() => {
     if (fieldMapping.isSuccess) {
@@ -96,7 +108,19 @@ const CippIntegrationFieldMapping = () => {
                     </Typography>
                   </Box>
                   {headerIndex === 0 && (
-                    <Box>
+                    <Stack direction="row" spacing={1}>
+                      {router.query.id === "ITGlue" && (
+                        <Tooltip title="Create the M365 Conditional Access Policy flexible asset type in ITGlue">
+                          <Button
+                            onClick={handleCreateCAType}
+                            variant="outlined"
+                            disabled={createCATypePostCall.isPending}
+                            startIcon={<Add />}
+                          >
+                            Create CA Policy Type
+                          </Button>
+                        </Tooltip>
+                      )}
                       <Tooltip title="Refresh Mappings">
                         <Button
                           onClick={() => {
@@ -107,9 +131,14 @@ const CippIntegrationFieldMapping = () => {
                           <Sync />
                         </Button>
                       </Tooltip>
-                    </Box>
+                    </Stack>
                   )}
                 </Stack>
+                {headerIndex === 0 && router.query.id === "ITGlue" && (
+                  <Box sx={{ my: 2 }}>
+                    <CippApiResults apiObject={createCATypePostCall} />
+                  </Box>
+                )}
                 <Divider />
                 <Grid container spacing={3} sx={{ my: 3 }}>
                   {fieldMapping?.data?.CIPPFields?.filter(

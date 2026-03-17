@@ -715,6 +715,17 @@
         }
       },
       {
+        "type": "switch",
+        "name": "ITGlue.SyncConditionalAccessPolicies",
+        "label": "Sync Conditional Access Policies to Flexible Assets",
+        "condition": {
+          "field": "ITGlue.Enabled",
+          "compareType": "is",
+          "compareValue": true,
+          "action": "disable"
+        }
+      },
+      {
         "type": "textField",
         "name": "ITGlue.ExcludeSerials",
         "label": "Exclude device serials (comma separated)",
